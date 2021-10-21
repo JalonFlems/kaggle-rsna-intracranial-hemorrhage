@@ -53,17 +53,25 @@ def create_record(item, dirname):
 
     id, labels = item
 
-    path = '%s/%s.dcm' % (dirname, id)
-    dicom = pydicom.dcmread(path)
+    path = '%s/%s.dcm' % (dirname, id) 
+
+    try:
+        dicom = pydicom.dcmread(path)
+    except FileNotFoundError:
+        return {'ID': float("NaN")}
     
     record = {
         'ID': id,
         'labels': ' '.join(labels),
         'n_label': len(labels),
     }
-    record.update(misc.get_dicom_raw(dicom))
 
-    raw = dicom.pixel_array
+    record.update(misc.get_dicom_raw(dicom))
+    
+    try:
+        raw = dicom.pixel_array
+    except:
+        return {'ID': float("NaN")}
     slope = float(record['RescaleSlope'])
     intercept = float(record['RescaleIntercept'])
     center = misc.get_dicom_value(record['WindowCenter'])
@@ -103,8 +111,9 @@ def create_df(ids, args):
             ),
             total=len(ids),
         ))
-    return pd.DataFrame(records).sort_values('ID').reset_index(drop=True)
-
+    df  = pd.DataFrame(records).sort_values('ID').reset_index(drop=True)
+    df.dropna(subset = ['ID'], inplace=True)
+    return df
 
 def main():
     args = get_args()

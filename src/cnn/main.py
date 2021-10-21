@@ -58,6 +58,7 @@ def main():
     log(f'batch size: {cfg.batch_size}')
     log(f'acc: {cfg.data.train.n_grad_acc}')
 
+    #import pdb; pdb.set_trace()
     model = factory.get_model(cfg)
     model.cuda()
 

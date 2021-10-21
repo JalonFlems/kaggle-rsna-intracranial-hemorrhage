@@ -50,7 +50,7 @@ resize = dict(name='Resize', params=dict(height=imgsize[0], width=imgsize[1]))
 hflip = dict(name='HorizontalFlip', params=dict(p=0.5,))
 vflip = dict(name='VerticalFlip', params=dict(p=0.5,))
 contrast = dict(name='RandomBrightnessContrast', params=dict(brightness_limit=0.08, contrast_limit=0.08, p=0.5))
-totensor = dict(name='ToTensor', params=dict(normalize=normalize))
+totensor = dict(name='ToTensor', params=dict())
 rotate = dict(name='Rotate', params=dict(limit=30, border_mode=0), p=0.7)
 rotate_test = dict(name='Rotate', params=dict(limit=25, border_mode=0), p=0.7)
 dicomnoise = dict(name='RandomDicomNoise', params=dict(limit_ratio=0.05, p=0.9))
@@ -62,7 +62,7 @@ data = dict(
     train=dict(
         dataset_type='CustomDataset',
         annotations='./cache/train_folds8_seed300.pkl',
-        imgdir='./input/stage_2_train_images',
+        imgdir='./input/stage_2_train',
         imgsize=imgsize,
         n_grad_acc=1,
         loader=dict(
@@ -79,7 +79,7 @@ data = dict(
     valid = dict(
         dataset_type='CustomDataset',
         annotations='./cache/train_folds8_seed300.pkl',
-        imgdir='./input/stage_2_train_images',
+        imgdir='./input/stage_2_train',
         imgsize=imgsize,
         loader=dict(
             shuffle=False,
@@ -95,7 +95,7 @@ data = dict(
     test = dict(
         dataset_type='CustomDataset',
         annotations='./cache/test.pkl',
-        imgdir='./input/stage_2_test_images',
+        imgdir='./input/stage_2_test',
         imgsize=imgsize,
         loader=dict(
             shuffle=False,

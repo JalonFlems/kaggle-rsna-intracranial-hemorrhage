@@ -6,8 +6,11 @@ from torch.utils.data import DataLoader
 import torch.optim
 from torch.optim import lr_scheduler
 import albumentations as A
-from albumentations.pytorch import ToTensor
 import pretrainedmodels
+
+from torchvision.transforms import ToTensor
+
+import ssl
 
 from .dataset.custom_dataset import CustomDataset
 from .transforms.transforms import RandomResizedCrop, RandomDicomNoise
@@ -39,6 +42,8 @@ def get_transforms(cfg):
 
 
 def get_model(cfg):
+    ssl._create_default_https_context = ssl._create_unverified_context
+    #urllib.request.urlopen(urllink)
 
     log(f'model: {cfg.model.name}')
     log(f'pretrained: {cfg.model.pretrained}')
@@ -59,7 +64,8 @@ def get_model(cfg):
     except KeyError as e:
         model_func = eval(cfg.model.name)
 
-    model = model_func(num_classes=1000, pretrained=cfg.model.pretrained)
+    model = model_func(num_classes=1000, pretrained=None)
+    model.load_state_dict(torch.load("./model/" + cfg.model.name))
     model.avg_pool = nn.AdaptiveAvgPool2d(1)
     model.last_linear = nn.Linear(
         model.last_linear.in_features,
