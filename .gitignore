@@ -10,5 +10,5 @@ catboost_info/
 /meta
 
 *.py[cod]
-
+*.swp
 misc.ipynb
