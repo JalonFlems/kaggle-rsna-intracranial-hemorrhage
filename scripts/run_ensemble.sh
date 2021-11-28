@@ -21,6 +21,6 @@ source $VENV_DIR/bin/activate
 
  
 cd ~/projects/def-lakahrs/mfjalon/kaggle-rsna-intracranial-hemorrhage
-./bin/ensemble.sh
+./bin/ensemble_updated.sh
 echo "End datetime:" >> $LATEST_RUN
 date >> $LATEST_RUN
