@@ -92,7 +92,6 @@ def valid(cfg, model):
         pickle.dump(results, f)
     log('saved to %s' % cfg.output)
 
-
 def train(cfg, model):
 
     criterion = factory.get_loss(cfg)
@@ -149,9 +148,10 @@ def train(cfg, model):
         log('[best] ep:%d loss:%.4f score:%.4f' % (best['epoch'], best['loss'], best['score']))
             
         #scheduler.step(val['loss']) # reducelronplateau
+        optim.step()
         scheduler.step()
 
-
+# TODO: Update with F1 or AUPRC
 def run_nn(cfg, mode, model, loader, criterion=None, optim=None, scheduler=None, apex=None):
     if mode in ['train']:
         model.train()
@@ -166,6 +166,9 @@ def run_nn(cfg, mode, model, loader, criterion=None, optim=None, scheduler=None,
     targets_all = []
     outputs_all = []
 
+    if scheduler:
+        print("Scheduler Learning Rate: {}", scheduler.get_last_lr())
+    
     for i, (inputs, targets, ids) in enumerate(loader):
 
         batch_size = len(inputs)
@@ -233,7 +236,7 @@ def calc_logloss(targets, outputs, eps=1e-5):
         'logloss': np.average(logloss_classes, weights=[2,1,1,1,1,1]),
     }
 
-
+# TODO: Add in similar function for new metrics
 def calc_auc(targets, outputs):
     macro = roc_auc_score(np.round(targets), outputs, average='macro')
     micro = roc_auc_score(np.round(targets), outputs, average='micro')

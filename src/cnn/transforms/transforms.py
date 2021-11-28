@@ -64,3 +64,35 @@ class RandomDicomNoise(ImageOnlyTransform):
             image *= ratio
 
         return image
+
+class RandomErase(ImageOnlyTransform):
+
+    def __init__(self, height, width, sl=0.01, sh=0.04, ratio=(3/4, 4/3), always_apply=False, p=1.0):
+        super().__init__(always_apply, p)
+        self.sl, self.sh = sl, sh
+        self.height = height
+        self.width = width
+        self.ratio = ratio
+
+    def apply(self, img):
+
+        height, width = img.shape[:2]
+        area = height * width
+
+        for attempt in range(10):
+            target_area = random.uniform(self.sl, self.sh) * area
+            aspect_ratio = random.uniform(*self.ratio)
+
+            w = int(round(math.sqrt(target_area * aspect_ratio)))
+            h = int(round(math.sqrt(target_area / aspect_ratio)))
+
+            if w < img.shape[1] and h < img.shape[0]:
+              x1 = random.randint(0, img.shape[0] - h)
+              y1 = random.randint(0, img.shape[1] - w)
+              if img.shape[2] == 3:
+                img[x1:x1 + h, y1:y1 + w, :] = 0.0
+              else:
+                print('!!!!!!!! random_erasing dim wrong!!!!!!!!!!!')
+                return img
+
+        return img
