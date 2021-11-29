@@ -220,13 +220,13 @@ densenet121 | 0.0748 | 0.977 |
 se_resnext (ExponentialLR) | 0.069 | 0.983 |
 se_resnext | 0.0568 | 0.989 |
 
-We also submitted our results to Kaggle, where we received the following scores:
+We also submitted our results to Kaggle, where we received the following scores on the private leaderboard:
 
-Submission | Score | Description |
---- | --- | --- |
-0 | 0.04719 | Original solution score |
-1 | 0.04732 | Recreated results using Appian model |
-2 | 0.05240 | Densenet PBE model |
+Submission | Rank | Score | Description |
+--- | --- | --- | --- |
+0 | 11 | 0.04719 | Original solution score |
+1 | 12 | 0.04732 | Recreated results using Appian model |
+2 | 37 | 0.05240 | Densenet PBE model |
 
 ---
 
